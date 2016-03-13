@@ -1,8 +1,8 @@
 `under construction...`
 
 ### signals_library (slib)
-SignalsLibrary is simple "include and use" library that provides anonimous function pointer (delegate),
-function arguments list (args_list) and simple messaging system (signal and slot).
+SignalsLibrary is simple "include and use" library that provides anonimous function pointer (`slib::delegate`),
+function arguments list (`slib::args_list`) and simple messaging system (`slib::signal` and `slib::slot`).
 
 - **slib::delegate** is a template anonimous pointer to class method or static function. Delegates can be copied
 and stored in generic containers (for example, `std::vector`). Delegates are fast, small (it consists only
