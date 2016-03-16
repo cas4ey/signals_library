@@ -26,6 +26,33 @@ SignalsLibrary is using features of C++11 standard, so you have to use C++11 com
 
 **NOTE:** `slib::signal` and `slib::slot` requires dynamic linkage with `shared_allocator` (instructions can be found [here](https://github.com/cas4ey/shared_allocator/)). `slib::delegate` and `slib::args_list` does not need `shared_allocator`.
 
+### example code for slib::delegate
+```
+#include "slib/delegate.hpp"
+
+class A
+{
+public:
+  int f(int x) const
+  {
+    return x * x;
+  }
+};
+
+int main()
+{
+  slib::delegate<int(int)> d;
+  A a;
+  
+  d.bind<A, &A::f>(&a); // or --- d.BIND(A, &a, f);
+  
+  auto result1 = d(10); // result1 == 100
+  auto result2 = d(5); // result2 == 25
+  
+  return 0;
+}
+```
+
 # LICENSE
 SignalsLibrary is licensed under terms of GNU GPL v3 (see file LICENSE), but I plan to add more permissive licenses
 in the near future (LGPL or MIT licenses maybe). Send me a message if you are interested.
