@@ -39,15 +39,36 @@ public:
   }
 };
 
+int g(int y)
+{
+  return y * 2;
+}
+
 int main()
 {
   slib::delegate<int(int)> d;
   A a;
   
-  d.bind<A, &A::f>(&a); // or --- d.BIND(A, &a, f);
+  // invoke unbinded delegate
+  auto result0 = d(10); // result0 == 0
+  
+  // binding delegate to class const-method
+  d.bind_const<A, &A::f>(&a); // or --- d.BIND_CONST(A, &a, f);
   
   auto result1 = d(10); // result1 == 100
   auto result2 = d(5); // result2 == 25
+  
+  // bindning delegate to static function
+  d.bind<g>();
+  
+  auto result3 = d(10); // result3 == 20
+  auto result4 = d(5); // result4 == 10
+  
+  // unbinding delegate
+  d.unbind();
+  
+  // invoke unbinded delegate again
+  auto result5 = d(5); // result5 == 0
   
   return 0;
 }
