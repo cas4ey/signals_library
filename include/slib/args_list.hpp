@@ -67,7 +67,7 @@ namespace slib {
 
     \warning Please, note that "set" methods does not change references and their values!
 
-    \warning Be careful with references. Referenced objects must exist when you will invoke functor/delegate.
+    \warning Be careful with references. Referenced objects must exist when you will invoke delegate.
 
     \ingroup slib */
     template <typename return_type, typename ... Args>

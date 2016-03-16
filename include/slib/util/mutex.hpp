@@ -52,6 +52,8 @@ namespace slib {
         By default lock and unlock methods does nothing, but works very fast.
         They can be made thread-safe if set_threadsafe would be called.
         Then lock and unlock methods will work properly (locking and unlocking mutex).
+        This is done to provide unified interface without virtual methods
+        (vtable call is slower than if-else).
         
         \ingroup util */
         class dynamic_mutex final
@@ -102,6 +104,8 @@ namespace slib {
             }
 
             /** \brief Changes behavior of lock and unlock methods.
+
+            \warning This method is NOT thread-safe! Use this on initialization.
             
             \param _is_threadsafe Thread-safety flag. If true, then lock and unlock will lock/unlock mutex.
             

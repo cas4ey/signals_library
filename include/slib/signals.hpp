@@ -6,12 +6,16 @@
 * copyright   : Copyright (C) 2016 Victor Zarubkin
 *             :
 * description : This header contains description of signals and slots with different number of arguments.
+*             : This version of signal, slot has a user-controlled thread-safety behavior.
+*             : By default, signal and slot are not thread-safe (for speed-up single thread usage), but
+*             : you can invoke method set_threadsafe(true) when you really need thread-safety - you will
+*             : got protected but slower version of signal and slot.
 *             : 
 *             : Slot is a delegate which uses signal subscription system.
 *             : Slots can not be copied (neigher copy constructible nor copy assignable).
 *             : It is because slot automatically disconnects from all connected signals on destructor.
 *             : Slots uses dynamic memory allocation on first connect to signal, and does not use
-*             : dynamic memory allocation on secondary connects (after disconnect).
+*             : dynamic memory allocation on secondary connects after disconnect.
 *             : 
 *             : Signal is inherited from slot and has the same syntax. Signal is used to call all
 *             : connected Slots when user calls it's emit_() method.
@@ -81,7 +85,7 @@ namespace slib {
         dynamic_mutex        m_mutex; ///< Mutex for multi-threading protection (it is not thread-safe by default)
         subscriber_type*     m_first; ///< Pointer to the first binded signal in list
         atomic_boolean     m_deleted; ///< Equals to true if deleted
-        allocator_type   m_allocator; ///< Allocator
+        allocator_type   m_allocator; ///< Allocator for safe cross-library allocations and reuse of deallocated memory
 
     public:
 

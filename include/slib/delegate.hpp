@@ -6,7 +6,7 @@
 * copyright   : Copyright (C) 2015 Victor Zarubkin
 *             : 
 * description : This header contains description of delegates with different number of arguments.
-*             : Delegate is template a pointer to class method or static function.
+*             : Delegate is a template pointer to class method or static function.
 *             : Delegates can be copied and stored in generic containers (for example, std::vector).
 *             : Delegates are fast, small (it consists only of two pointers) and
 *             : does not use dynamic memory allocation.
@@ -46,15 +46,15 @@
 #ifdef BIND
 # error delegate.hpp Macro BIND is already defined!
 #else
-// Macro for binding delegate, functor and slot to non-static method of some object.
+// Macro for binding delegate and slot to non-static method of some object.
 # define BIND(Class, Instance, Method) bind<Class, &Class::Method >(Instance)
 #endif
 
 
 #ifdef BIND_CONST
-# error delegate.hpp Macro BIND_C is already defined!
+# error delegate.hpp Macro BIND_CONST is already defined!
 #else
-// Macro for binding delegate, functor and slot to non-static const-method of some object.
+// Macro for binding delegate and slot to non-static const-method of some object.
 # define BIND_CONST(Class, Instance, ConstMethod) bind_const<Class, &Class::ConstMethod >(Instance)
 #endif
 
@@ -92,7 +92,6 @@ namespace slib {
     // Forward declarations
     template <typename function_signature> class delegate;
     template <typename function_signature> class args_list;
-    template <typename function_signature> class functor;
     template <typename function_signature> class slot;
     template <typename function_signature> class signal;
 
