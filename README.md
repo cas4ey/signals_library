@@ -1,5 +1,3 @@
-`under construction...`
-
 ### signals_library (slib)
 SignalsLibrary (a.k.a. **slib**) is simple "include and use" library that provides anonimous function pointer (`slib::delegate`),
 function arguments list (`slib::args_list`) and simple messaging system (`slib::signal` and `slib::slot`).
@@ -25,6 +23,7 @@ SignalsLibrary is using features of C++11 standard, so you have to use C++11 com
 ### adding slib into your project
 1. Copy all files from `include/slib` to to your include directory (for example, `include/third_party/slib` or just `include/slib`). Please, note that `slib` is using [shared_allocator](https://github.com/cas4ey/shared_allocator/) as a third-party library (see **NOTE** below).
 2. Include necessary headers (`slib/delegate.hpp` and/or `slib/args_list.hpp` and/or `slib/signals.hpp`) and you are ready for using delegates, args_lists, signals and slots.
+
 **NOTE:** `slib::signal` and `slib::slot` requires dynamic linkage with `shared_allocator` (instructions can be found [here](https://github.com/cas4ey/shared_allocator/)). `slib::delegate` and `slib::args_list` does not need `shared_allocator`.
 
 # LICENSE
