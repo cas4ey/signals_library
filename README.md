@@ -4,7 +4,7 @@ function arguments list (`slib::args_list`) and simple messaging system (`slib::
 
 - **slib::delegate** is a template anonimous pointer to class method or static function. Delegates can be copied
 and stored in generic containers (for example, `std::vector`). Delegates are fast, small (it consists only
-of two pointers) and does not use dynamic memory allocation. `#include "slib/delegate.hpp"` and you are ready to use delegates.
+of two pointers) and does not use dynamic memory allocation. `#include "slib/delegate.hpp"` and you are ready to use delegates. `slib::delegate` is redesigned idea of Sergey Ryazanov's [fast delegates](http://www.codeproject.com/Articles/11015/The-Impossibly-Fast-C-Delegates).
 - **slib::args_list** is a function arguments list. It can be used to store arguments to call a lot of functions later.
 Any argument in list can be changed at any time. It stores arguments in `std::tuple` and has methods for unpacking
 arguments from tuple to call function/method/delegate/functor with these arguments. `#include "slib/args_list.hpp"` to
