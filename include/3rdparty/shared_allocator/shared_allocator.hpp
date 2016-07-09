@@ -40,7 +40,8 @@
 #ifndef SHARED___ALLOCATOR_____HPP___
 #define SHARED___ALLOCATOR_____HPP___
 
-#include <xstddef>
+#include <memory>
+#include <stddef.h>
 #include <type_traits>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +99,7 @@ namespace salloc {
 
         template <class T>
         inline void shared_construct(T* _instance, T&& _value) {
-            ::new (static_cast<void*>(_instance)) T(_value);
+            ::new (static_cast<void*>(_instance)) T(::std::forward<T&&>(_value));
         }
 
         template <class T>
@@ -115,19 +116,19 @@ namespace salloc {
         inline void shared_construct(TYPENAME* _instance) { *_instance = DEFAULT_VALUE; } \
         inline void shared_construct(TYPENAME* _instance, TYPENAME _value) { *_instance = _value; }
 
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(bool, false);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(char, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned char, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(short, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned short, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(int, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned int, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(long, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned long, 0);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(long long, 0LL);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned long long, 0ULL);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(float, 0.f);
-        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(double, 0.0);
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(bool, false)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(char, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned char, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(short, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned short, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(int, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned int, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(long, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned long, 0)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(long long, 0LL)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(unsigned long long, 0ULL)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(float, 0.f)
+        SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR(double, 0.0)
 
 #undef SHARED_ALLOCATOR_DECLARE_DEFAULT_CONSTRUCTOR
 
@@ -205,6 +206,13 @@ namespace salloc {
         /** \brief Empty copy constructor.
 
         Does nothing. */
+        shared_allocator(const other&) throw()
+        {
+        }
+
+        /** \brief Empty copy constructor.
+
+        Does nothing. */
         template <class U>
         shared_allocator(const shared_allocator<U>&) throw()
         {
@@ -217,6 +225,19 @@ namespace salloc {
         shared_allocator<T>& operator=(const shared_allocator<U>&) throw()
         {
             return *this;
+        }
+
+        /** Operator == for STL compatibility. */
+        inline bool operator == (const other&) throw()
+        {
+            return true;
+        }
+
+        /** Operator == for STL compatibility. */
+        template <class U>
+        inline bool operator == (const shared_allocator<U>&) throw()
+        {
+            return true;
         }
 
         /** \brief Returns number of elements in allocated memory.
@@ -285,7 +306,7 @@ namespace salloc {
         template <class U>
         void construct(U* _singleObject, U&& _value) const
         {
-            shared_construct(_singleObject, _value);
+            shared_construct(_singleObject, ::std::forward<U&&>(_value));
         }
 
         /** \brief Construct new object on preallocated memory using arguments list.
@@ -324,13 +345,6 @@ namespace salloc {
     }; // END struct shared_allocator<T>.
 
 } // END namespace salloc.
-
-/** Operator == for STL compatibility. */
-template <class T, class U>
-inline bool operator == (const ::salloc::shared_allocator<T>&, const ::salloc::shared_allocator<U>&) throw()
-{
-    return true;
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

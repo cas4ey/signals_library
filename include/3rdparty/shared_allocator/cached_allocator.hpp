@@ -140,9 +140,22 @@ namespace salloc {
 
         Does nothing and returns reference to this allocator. */
         template <class U>
-        ThisType& operator=(const U&)
+        ThisType& operator = (const U&)
         {
             return *this;
+        }
+
+        /** Operator == for STL compatibility. */
+        inline bool operator == (const ThisType&) throw()
+        {
+            return true;
+        }
+
+        /** Operator == for STL compatibility. */
+        template <class U, class W>
+        inline bool operator == (const cached_allocator<U, W>&) throw()
+        {
+            return false;
         }
 
         ~cached_allocator()
@@ -273,7 +286,7 @@ namespace salloc {
         template <class U>
         inline void construct(U* _singleObject, U&& _value)
         {
-            m_allocator.construct(_singleObject, _value);
+            m_allocator.construct(_singleObject, ::std::forward<U&&>(_value));
         }
 
         /** \brief Construct new object on preallocated memory using arguments list.
@@ -334,21 +347,6 @@ namespace salloc {
     using local_cached_allocator = ::salloc::cached_allocator<T, ::std::allocator<T> >;
 
 } // END namespace salloc.
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/** Operator == for STL compatibility. */
-template <class T, class U>
-inline bool operator == (const ::salloc::cached_allocator<T, U>&, const ::salloc::cached_allocator<T, U>&) throw()
-{
-    return true;
-}
-
-template <class T, class U, class W, class Q>
-inline bool operator == (const ::salloc::cached_allocator<T, U>&, const ::salloc::cached_allocator<W, Q>&) throw()
-{
-    return false;
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
